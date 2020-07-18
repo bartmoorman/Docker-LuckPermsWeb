@@ -11,7 +11,7 @@ RUN apt-get update \
     npm \
  && npm install -g npm@latest && hash -r \
  && git clone --recursive https://github.com/lucko/LuckPermsWeb.git . \
- && tmp=$(mktemp) && jq '.selfHosted = true' config.json > ${tmp} && mv ${tmp} config.json \
+ && tmp=$(mktemp) && jq '.bytebin_url = https://bytebin.id10t.us/ | .selfHosted = true' config.json > ${tmp} && mv ${tmp} config.json \
  && npm install && npm run build \
  && apt-get autoremove --yes --purge \
  && apt-get clean \
