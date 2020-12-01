@@ -9,9 +9,10 @@ RUN apt-get update \
     git \
     jq \
     npm \
+    moreutils \
  && npm install -g npm@latest && hash -r \
  && git clone --recursive https://github.com/lucko/LuckPermsWeb.git . \
- && tmp=$(mktemp) && jq --arg url https://bytebin.id10t.us/ --argjson self true '.bytebin_url = $url | .selfHosted = $self' config.json > ${tmp} && mv ${tmp} config.json \
+ && jq --arg url https://bytebin.id10t.us/ --argjson self true '.bytebin_url = $url | .selfHosted = $self' config.json | sponge config.json \
  && npm install && npm run build \
  && apt-get autoremove --yes --purge \
  && apt-get clean \
@@ -38,7 +39,7 @@ RUN echo 'deb http://ppa.launchpad.net/certbot/certbot/ubuntu bionic main' > /et
     rewrite \
     ssl \
  && sed --in-place --regexp-extended \
-    --expression 's/^(Include\s+ports\.conf)$/#\1/' \
+    --expression 's|^(Include\s+ports\.conf)$|#\1|' \
     /etc/apache2/apache2.conf \
  && apt-get autoremove --yes --purge \
  && apt-get clean \
