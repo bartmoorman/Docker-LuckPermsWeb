@@ -1,6 +1,8 @@
 FROM bmoorman/ubuntu:bionic AS builder
 
-ARG DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive \
+    BYTEBIN_URL \
+    SELFHOSTED=true
 
 WORKDIR /opt/LuckPermsWeb
 
@@ -12,7 +14,8 @@ RUN apt-get update \
     moreutils \
  && npm install -g npm@latest && hash -r \
  && git clone --recursive https://github.com/lucko/LuckPermsWeb.git . \
- && jq --arg url https://bytebin.id10t.us/ --argjson self true '.bytebin_url = $url | .selfHosted = $self' config.json | sponge config.json \
+ && if [ ${BYTEBIN_URL} ]; then jq --arg bytebin_url ${BYTEBIN_URL} '.bytebin_url = $bytebin_url' config.json | sponge config.json; fi \
+ && jq --argjson selfhosted ${SELFHOSTED} '.selfHosted = $selfhosted' config.json | sponge config.json \
  && npm install && npm run build \
  && apt-get autoremove --yes --purge \
  && apt-get clean \

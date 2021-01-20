@@ -19,7 +19,7 @@ after_script:
 build:
   stage: build
   script:
-    - docker build --pull --tag ${DOCKER_HUB_IMAGE} --tag ${GITLAB_IMAGE} .
+    - docker build --build-arg BYTEBIN_URL=${BYTEBIN_URL} --pull --tag ${DOCKER_HUB_IMAGE} --tag ${GITLAB_IMAGE} .
 
 push:
   stage: push
