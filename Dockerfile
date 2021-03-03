@@ -1,21 +1,19 @@
 FROM bmoorman/ubuntu:focal AS builder
 
-ARG DEBIAN_FRONTEND=noninteractive \
-    BYTEBIN_URL \
-    SELFHOSTED=true
+ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /opt/LuckPermsWeb
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
+    build-essential \
     git \
     jq \
     npm \
     moreutils \
- && npm install -g npm@latest && hash -r \
  && git clone --recursive https://github.com/lucko/LuckPermsWeb.git . \
  && if [ ${BYTEBIN_URL} ]; then jq --arg bytebin_url ${BYTEBIN_URL} '.bytebin_url = $bytebin_url' config.json | sponge config.json; fi \
- && jq --argjson selfhosted ${SELFHOSTED} '.selfHosted = $selfhosted' config.json | sponge config.json \
+ && jq --argjson selfhosted ${SELFHOSTED:-true} '.selfHosted = $selfhosted' config.json | sponge config.json \
  && npm install && npm run build \
  && apt-get autoremove --yes --purge \
  && apt-get clean \
