@@ -16,7 +16,7 @@ RUN apt-get update \
  && git clone --recursive https://github.com/lucko/LuckPermsWeb.git . \
  && if [ ${BYTEBIN_URL} ]; then jq --arg bytebin_url ${BYTEBIN_URL} '.bytebin_url = $bytebin_url' config.json | sponge config.json; fi \
  && jq --argjson selfhosted ${SELFHOSTED} '.selfHosted = $selfhosted' config.json | sponge config.json \
- && npm install && npm run build \
+ && npm config set registry http://registry.npmjs.org/ && npm install && npm run build \
  && apt-get autoremove --yes --purge \
  && apt-get clean \
  && rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -32,7 +32,6 @@ RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
     apache2 \
     certbot \
-    curl \
     ssl-cert \
  && a2enmod \
     remoteip \
