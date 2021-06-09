@@ -1,4 +1,4 @@
-FROM node AS builder
+FROM node:latest AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive \
     BYTEBIN_URL \
