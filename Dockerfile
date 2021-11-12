@@ -2,7 +2,8 @@ FROM node:latest AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive \
     BYTEBIN_URL \
-    SELFHOSTED=true
+    SELFHOSTED=true \
+    NODE_OPTIONS=--openssl-legacy-provider
 
 WORKDIR /opt/LuckPermsWeb
 
