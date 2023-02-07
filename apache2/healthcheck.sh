@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ "${HTTPD_SSL:-SSL}" == "SSL" ]; then
   PROTO="https"
 else

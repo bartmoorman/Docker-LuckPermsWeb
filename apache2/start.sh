@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 chown www-data: /config
 
 if [ ! -d /config/httpd/ssl ]; then
